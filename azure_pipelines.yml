@@ -20,20 +20,21 @@ stages:
       - job: TestJob
         displayName: "Test Flask App"
         steps:
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: "3.12.7"
-            displayName: "Use Python 3.12.7"
-
           - script: |
-              python -m pip install --upgrade pip
-              pip install -r requirements.txt
-            displayName: "Install dependencies"
+              # 1. Create a virtual environment using your local Python 3.12
+              echo "--- Creating virtual environment ---"
+              python3.12 -m venv .venv
+              source .venv/bin/activate
 
-          - script: |
-              pip install pytest
-              pytest tests/
-            displayName: "Run tests with pytest"
+              # 2. Install dependencies into the venv
+              echo "--- Installing dependencies ---"
+              python3 -m pip install --upgrade pip
+              pip3 install -r requirements.txt
+
+              # 3. Run the tests
+              echo "--- Running tests ---"
+              pytest
+            displayName: "Install Dependencies and Run Tests"
 
   - stage: BuildAndPush
     displayName: "Build and Push Docker Image"

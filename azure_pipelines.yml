@@ -20,7 +20,7 @@ stages:
       - job: TestJob
         displayName: "Test Flask App"
         steps:
-          - task: UsePythonVersion@0
+          - task: UsePython@0
             inputs:
               versionSpec: "3.12"
             displayName: "Use Python 3.12"

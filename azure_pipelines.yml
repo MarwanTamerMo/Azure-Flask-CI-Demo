@@ -22,8 +22,8 @@ stages:
         steps:
           - task: UsePythonVersion@0
             inputs:
-              versionSpec: "3.11"
-            displayName: "Use Python 3.11"
+              versionSpec: "3.12.7"
+            displayName: "Use Python 3.12.7"
 
           - script: |
               python -m pip install --upgrade pip

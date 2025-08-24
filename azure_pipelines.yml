@@ -21,21 +21,13 @@ stages:
         displayName: "Test Flask App"
 
         steps:
-          - script: echo "##vso[task.setvariable variable=pythonLocation]/usr/bin/python3"
-            displayName: "Set Python Path"
-
-          - task: UsePythonVersion@0
-            inputs:
-              versionSpec: $(pythonLocation)'
-            displayName: "Use Python 3.12 from a custom path"
-
           - script: |
-              python -m pip install --upgrade pip
-              pip install -r requirements.txt
+              python3 -m pip install --upgrade pip
+              pip3 install -r requirements.txt
             displayName: "Install dependencies"
 
           - script: |
-              pip install pytest
+              pip3 install pytest
               pytest tests/
             displayName: "Run tests with pytest"
 

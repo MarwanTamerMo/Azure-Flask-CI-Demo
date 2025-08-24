@@ -1,5 +1,6 @@
 # azure-pipelines.yml
 
+# Triggers: CI on main and workflow branches, and manual run support
 trigger:
   - main
 

@@ -22,25 +22,25 @@ stages:
 
         steps:
           - script: |
-              # Create and activate a virtual environment
+              # 1. Create and activate the virtual environment
+              echo "--- Activating virtual environment ---"
               python3 -m venv .venv
               source .venv/bin/activate
 
-              # Install dependencies into the active venv
+              # 2. Install dependencies
+              echo "--- Installing dependencies ---"
               python3 -m pip install --upgrade pip
               pip3 install -r requirements.txt
-            displayName: "Install dependencies in Venv"
+              pip3 install pytest
 
-          - script: |
-              # Activate the venv again for this new task
-              source .venv/bin/activate
-
-              # Tell Python to include the project root in its search path
+              # 3. Set the PYTHONPATH
+              echo "--- Setting PYTHONPATH ---"
               export PYTHONPATH=$(System.DefaultWorkingDirectory)
 
-              # Now run pytest
+              # 4. Run the tests
+              echo "--- Running tests ---"
               pytest
-            displayName: "Run tests in Venv"
+            displayName: "Install Dependencies and Run Tests in Venv"
 
   - stage: BuildAndPush
     displayName: "Build and Push Docker Image"

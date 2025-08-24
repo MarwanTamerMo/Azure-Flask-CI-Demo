@@ -21,7 +21,7 @@ stages:
         displayName: "Test Flask App"
         steps:
           - script: |
-              # 1. Create a virtual environment using your local Python 3.12
+              # 1. Create and activate a virtual environment using your local Python
               echo "--- Creating virtual environment ---"
               python3.12 -m venv .venv
               source .venv/bin/activate
@@ -31,7 +31,11 @@ stages:
               python3 -m pip install --upgrade pip
               pip3 install -r requirements.txt
 
-              # 3. Run the tests
+              # 3. Set the PYTHONPATH so tests can find the app
+              echo "--- Setting PYTHONPATH ---"
+              export PYTHONPATH=$(System.DefaultWorkingDirectory)
+
+              # 4. Run the tests
               echo "--- Running tests ---"
               pytest
             displayName: "Install Dependencies and Run Tests"

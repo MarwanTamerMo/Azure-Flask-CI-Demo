@@ -5,7 +5,7 @@ trigger:
   - main
 
 pool:
-  vmImage: "ubuntu-latest"
+  name: "Default" # Use the default pool (Self-hosted agents)
 
 variables:
   # Replace with your Docker Hub username

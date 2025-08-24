@@ -72,3 +72,16 @@ This project is configured for automated testing and containerization.
 To run the unit tests locally, execute the following command from the project's root directory:
 ```bash
 pytest
+```
+
+```bash
+docker build -t your-dockerhub-username/flask-demo .
+```
+To run the container after building it:
+
+```bash
+docker run -p 5000:5000 your-dockerhub-username/flask-demo
+```
+---
+
+**Note**: Remember to replace the placeholder URL for the Azure Pipelines status badge with the one for your actual pipeline. You can get this by navigating to your pipeline's summary page, clicking the three dots (...), and selecting Status badge.

@@ -19,28 +19,21 @@ stages:
     jobs:
       - job: TestJob
         displayName: "Test Flask App"
-
         steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.11"
+            displayName: "Use Python 3.11"
+
           - script: |
-              # 1. Create and activate the virtual environment
-              echo "--- Activating virtual environment ---"
-              python3 -m venv .venv
-              source .venv/bin/activate
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+            displayName: "Install dependencies"
 
-              # 2. Install dependencies
-              echo "--- Installing dependencies ---"
-              python3 -m pip install --upgrade pip
-              pip3 install -r requirements.txt
-              pip3 install pytest
-
-              # 3. Set the PYTHONPATH
-              echo "--- Setting PYTHONPATH ---"
-              export PYTHONPATH=$(System.DefaultWorkingDirectory)
-
-              # 4. Run the tests
-              echo "--- Running tests ---"
-              pytest
-            displayName: "Install Dependencies and Run Tests in Venv"
+          - script: |
+              pip install pytest
+              pytest tests/
+            displayName: "Run tests with pytest"
 
   - stage: BuildAndPush
     displayName: "Build and Push Docker Image"

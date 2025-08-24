@@ -1,0 +1,54 @@
+# azure-pipelines.yml
+
+trigger:
+  - main
+
+pool:
+  vmImage: "ubuntu-latest"
+
+variables:
+  # Replace with your Docker Hub username
+  dockerHubUser: "marwanabdelmoneim"
+  imageName: "flask-demo"
+  tag: "$(Build.BuildId)"
+
+stages:
+  - stage: Test
+    displayName: "Run Unit Tests"
+    jobs:
+      - job: TestJob
+        displayName: "Test Flask App"
+        steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: "3.9"
+            displayName: "Use Python 3.9"
+
+          - script: |
+              python -m pip install --upgrade pip
+              pip install -r requirements.txt
+            displayName: "Install dependencies"
+
+          - script: |
+              pip install pytest
+              pytest tests/
+            displayName: "Run tests with pytest"
+
+  - stage: BuildAndPush
+    displayName: "Build and Push Docker Image"
+    dependsOn: Test # This stage runs only if the 'Test' stage succeeds
+    condition: succeeded()
+    jobs:
+      - job: BuildJob
+        displayName: "Build and Push"
+        steps:
+          - task: Docker@2
+            displayName: "Build and push image to Docker Hub"
+            inputs:
+              containerRegistry: "DockerHubConnection" # Must match your service connection name
+              repository: "$(dockerHubUser)/$(imageName)"
+              command: "buildAndPush"
+              Dockerfile: "**/Dockerfile"
+              tags: |
+                $(tag)
+                latest
